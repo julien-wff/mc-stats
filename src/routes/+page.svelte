@@ -17,7 +17,7 @@
 
     <LeaderboardSection {rows} {loading} />
 
-    <footer class="mt-8 text-xs text-slate-500">
+    <footer class="mt-8 text-xs text-slate-600 dark:text-slate-500">
         <p>
             Tip: If you can't select a folder, try a Chromium-based browser (Chrome/Edge). Folder upload relies on
             <span class="font-mono">webkitdirectory</span>.

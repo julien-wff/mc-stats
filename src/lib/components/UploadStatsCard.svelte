@@ -91,10 +91,10 @@
     }
 </script>
 
-<div class="rounded-2xl border border-slate-800 bg-slate-900/40 p-5">
-    <h2 class="text-sm font-medium text-slate-200">Upload stats folder</h2>
-    <p class="mt-1 text-sm text-slate-300">
-        Select the folder at <span class="font-mono text-slate-200">…/world/stats</span>.
+<div class="rounded-2xl border border-slate-200 bg-white/60 p-5 dark:border-slate-800 dark:bg-slate-900/40">
+    <h2 class="text-sm font-medium text-slate-800 dark:text-slate-200">Upload stats folder</h2>
+    <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">
+        Select the folder at <span class="font-mono text-slate-800 dark:text-slate-200">…/world/stats</span>.
     </p>
 
     <div class="mt-4">
@@ -107,10 +107,12 @@
     </div>
 
     {#if status}
-        <p class="mt-3 text-sm text-slate-300">{status}</p>
+        <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">{status}</p>
     {/if}
     {#if error}
-        <p class="mt-3 rounded-xl border border-rose-900/50 bg-rose-950/30 px-3 py-2 text-sm text-rose-200">
+        <p
+            class="mt-3 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-200"
+        >
             {error}
         </p>
     {/if}
