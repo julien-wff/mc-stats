@@ -1,1 +1,19 @@
 @import 'tailwindcss';
+
+@layer base {
+    html {
+        @apply h-full;
+    }
+    body {
+        @apply min-h-full bg-slate-950 text-slate-100 antialiased;
+    }
+    :focus-visible {
+        @apply outline-none ring-2 ring-sky-400 ring-offset-2 ring-offset-slate-950;
+    }
+    ::selection {
+        @apply bg-sky-500/30;
+    }
+    a {
+        @apply text-sky-400 hover:text-sky-300 underline underline-offset-4;
+    }
+}
