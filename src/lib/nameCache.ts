@@ -1,10 +1,15 @@
-const CACHE_KEY = 'mc-stats:name-cache:v1';
+const CACHE_KEY_V1 = 'mc-stats:player-cache:v1';
 
-type Cache = Record<string, string>;
+export interface CachedPlayer {
+    name: string;
+    skinUrl: string | null;
+}
+
+type Cache = Record<string, CachedPlayer>;
 
 function readCache(): Cache {
     try {
-        const raw = localStorage.getItem(CACHE_KEY);
+        const raw = localStorage.getItem(CACHE_KEY_V1);
         if (!raw) return {};
         const parsed = JSON.parse(raw) as unknown;
         if (!parsed || typeof parsed !== 'object') return {};
@@ -16,20 +21,34 @@ function readCache(): Cache {
 
 function writeCache(cache: Cache): void {
     try {
-        localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+        localStorage.setItem(CACHE_KEY_V1, JSON.stringify(cache));
     } catch {
         // ignore (private mode, quota, etc)
     }
 }
 
-export function getCachedName(uuid: string): string | null {
+export function getCachedName(uuid: string): CachedPlayer | null {
     const cache = readCache();
     return cache[uuid] ?? null;
 }
 
 export function setCachedName(uuid: string, name: string): void {
     const cache = readCache();
-    cache[uuid] = name;
+    cache[uuid] = {
+        name,
+        skinUrl: cache[uuid]?.skinUrl ?? null,
+    };
+    writeCache(cache);
+}
+
+export function getCachedPlayer(uuid: string): CachedPlayer | null {
+    const cache = readCache();
+    return cache[uuid] ?? null;
+}
+
+export function setCachedPlayer(uuid: string, player: CachedPlayer): void {
+    const cache = readCache();
+    cache[uuid] = player;
     writeCache(cache);
 }
 

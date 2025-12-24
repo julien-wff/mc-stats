@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { resolvePlayerName } from '$lib/api';
-    import { getCachedName, mapWithConcurrency, setCachedName } from '$lib/nameCache';
+    import { resolvePlayerProfile } from '$lib/api';
+    import { getCachedPlayer, mapWithConcurrency, setCachedPlayer } from '$lib/nameCache';
     import {
         compareRows,
         leaderboardRowFromStats,
@@ -56,25 +56,26 @@
 
             status = `Resolving player names…`;
             const uniqueUuids = Array.from(new Set(parsed.map(p => p.uuid)));
-            const nameEntries = await mapWithConcurrency(uniqueUuids, 4, async uuid => {
-                const cached = getCachedName(uuid);
+            const playerEntries = await mapWithConcurrency(uniqueUuids, 4, async uuid => {
+                const cached = getCachedPlayer(uuid);
                 if (cached) return [uuid, cached] as const;
                 try {
-                    const name = await resolvePlayerName(uuid);
-                    setCachedName(uuid, name);
-                    return [uuid, name] as const;
+                    const player = await resolvePlayerProfile(uuid);
+                    setCachedPlayer(uuid, player);
+                    return [uuid, player] as const;
                 } catch {
-                    return [uuid, `Player ${shortUuid(uuid)}`] as const;
+                    return [uuid, { name: `Player ${shortUuid(uuid)}`, skinUrl: null }] as const;
                 }
             });
 
-            const nameByUuid = new Map<string, string>(nameEntries);
+            const playerByUuid = new Map<string, { name: string; skinUrl: string | null }>(playerEntries);
             status = `Building leaderboard…`;
             rows = parsed
                 .map(p =>
                     leaderboardRowFromStats(
                         p.uuid,
-                        nameByUuid.get(p.uuid) ?? `Player ${shortUuid(p.uuid)}`,
+                        playerByUuid.get(p.uuid)?.name ?? `Player ${shortUuid(p.uuid)}`,
+                        playerByUuid.get(p.uuid)?.skinUrl ?? null,
                         p.root as any,
                     ),
                 )

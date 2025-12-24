@@ -9,7 +9,7 @@
 
     let { rows = [], loading = false }: Props = $props();
 
-    type SortColumn = keyof Omit<PlayerLeaderboardRow, 'uuid'>;
+    type SortColumn = keyof Omit<PlayerLeaderboardRow, 'uuid' | 'skinUrl'>;
     type SortDirection = 'asc' | 'desc';
 
     let sortColumn = $state<SortColumn>('playTimeTicks');
@@ -60,6 +60,17 @@
         return uuid.length >= 8 ? uuid.slice(0, 8) : uuid;
     }
 </script>
+
+<style>
+    .skin-img {
+        background-repeat: no-repeat;
+        /* 64px skin -> 8px head => scale x8 relative to the element size */
+        background-size: calc(var(--skin-size) * 8) calc(var(--skin-size) * 8);
+        /* Head starts at (8px,8px) => shift by -1 * element size after scaling */
+        background-position: calc(var(--skin-size) * -1) calc(var(--skin-size) * -1);
+        image-rendering: pixelated;
+    }
+</style>
 
 <section class="rounded-2xl border border-slate-200 bg-white/60 dark:border-slate-800 dark:bg-slate-900/40">
     <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-4 dark:border-slate-800">
@@ -143,9 +154,21 @@
                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-950/30">
                             <td class="px-5 py-4 text-slate-500 dark:text-slate-400">{i + 1}</td>
                             <td class="px-5 py-4">
-                                <div class="font-medium text-slate-900 dark:text-slate-100">{row.name}</div>
-                                <div class="mt-0.5 font-mono text-xs text-slate-500 dark:text-slate-400">
-                                    {shortUuid(row.uuid)}
+                                <div class="flex items-center gap-3">
+                                    {#if row.skinUrl}
+                                        <span
+                                            class="skin-img h-9 w-9 rounded-lg outline outline-slate-200 bg-slate-50 dark:outline-slate-800 dark:bg-slate-950/30"
+                                            style={`--skin-size: 36px; background-image: url(${row.skinUrl});`}
+                                            role="img"
+                                            aria-label={row.name}
+                                        ></span>
+                                    {/if}
+                                    <div>
+                                        <div class="font-medium text-slate-900 dark:text-slate-100">{row.name}</div>
+                                        <div class="mt-0.5 font-mono text-xs text-slate-500 dark:text-slate-400">
+                                            {shortUuid(row.uuid)}
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
                             <td class="px-5 py-4 text-slate-700 dark:text-slate-200">

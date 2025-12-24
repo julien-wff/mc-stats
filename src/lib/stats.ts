@@ -5,6 +5,7 @@ export type SortKey = 'playTime' | 'deaths' | 'distance' | 'blocksMined' | 'bloc
 export interface PlayerLeaderboardRow {
     uuid: string;
     name: string;
+    skinUrl: string | null;
     playTimeTicks: number;
     deaths: number;
     distanceCm: number;
@@ -129,13 +130,19 @@ export function parseStatsJson(text: string): StatsRoot | null {
     }
 }
 
-export function leaderboardRowFromStats(uuid: string, name: string, root: StatsRoot): PlayerLeaderboardRow {
+export function leaderboardRowFromStats(
+    uuid: string,
+    name: string,
+    skinUrl: string | null,
+    root: StatsRoot,
+): PlayerLeaderboardRow {
     const stats = root.stats;
     const custom = stats?.['minecraft:custom'];
 
     return {
         uuid,
         name,
+        skinUrl,
         playTimeTicks: safeNumber(custom?.['minecraft:play_time']),
         deaths: safeNumber(custom?.['minecraft:deaths']),
         distanceCm: sumCustomDistanceCm(custom),
