@@ -8,6 +8,11 @@
     let loading = $state(false);
 </script>
 
+<svelte:head>
+    <title>Minecraft Stats Leaderboard</title>
+    <meta name="description" content="Upload your Minecraft world's stats folder to see a leaderboard per player." />
+</svelte:head>
+
 <main class="mx-auto max-w-6xl px-4 py-6 sm:py-10">
     <PageHeader />
 
