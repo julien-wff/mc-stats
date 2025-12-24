@@ -3,18 +3,16 @@
     import LeaderboardSection from '$lib/components/LeaderboardSection.svelte';
     import PageHeader from '$lib/components/PageHeader.svelte';
     import UploadStatsCard from '$lib/components/UploadStatsCard.svelte';
-    import WhatYouSeeCard from '$lib/components/WhatYouSeeCard.svelte';
 
     let rows = $state<PlayerLeaderboardRow[]>([]);
     let loading = $state(false);
 </script>
 
-<main class="mx-auto max-w-6xl px-4 py-10 sm:py-14">
+<main class="mx-auto max-w-6xl px-4 py-6 sm:py-10">
     <PageHeader />
 
-    <section class="mb-8 grid gap-4 sm:grid-cols-2">
+    <section class="mb-8 gap-4">
         <UploadStatsCard bind:rows bind:loading />
-        <WhatYouSeeCard />
     </section>
 
     <LeaderboardSection {rows} {loading} />
